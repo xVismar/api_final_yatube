@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.filters import SearchFilter
+from rest_framework import filters
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
@@ -52,8 +52,8 @@ class CommentViewSet(PermissionsMixin):
 
 class FollowViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = FollowSerializer
-    filter_backends = (SearchFilter,)
     permission_classes = (IsAuthenticated,)
+    filter_backends = (filters.SearchFilter,)
     search_fields = ('=following__username',)
 
     def get_queryset(self):
