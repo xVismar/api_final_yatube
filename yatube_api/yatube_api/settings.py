@@ -2,6 +2,8 @@ from pathlib import Path
 
 from datetime import timedelta
 
+from django.conf.global_settings import USE_L10N
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'hhz7l-ltdismtf@bzyz+rple7*s*w$jak%whj@(@u0eok^f9k4'
@@ -21,7 +23,6 @@ INSTALLED_APPS = [
     'djoser',
     'posts.apps.PostsConfig',
     'api.apps.ApiConfig',
-    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -86,6 +87,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+USE_L10N = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ((BASE_DIR / 'static/'),)

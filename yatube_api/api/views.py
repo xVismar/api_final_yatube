@@ -68,4 +68,3 @@ class FollowViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
         queryset = self.request.user.follower.all()
         search_param = self.request.query_params.get('search')
         return self.custom_search(queryset, search_param)
-
