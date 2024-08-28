@@ -1,3 +1,4 @@
+from django.core.exceptions import FieldDoesNotExist
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
@@ -53,7 +54,7 @@ class CommentViewSet(PermissionsMixin):
 
 class FollowViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = FollowSerializer
-    filter_backends = (DjangoFilterBackend, SearchFilter)
+    filter_backends = (SearchFilter,)
     permission_classes = (IsAuthenticated,)
     search_fields = ('=following__username',)
 
