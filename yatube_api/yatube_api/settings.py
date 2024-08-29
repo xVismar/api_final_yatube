@@ -1,8 +1,5 @@
-from pathlib import Path
-
 from datetime import timedelta
-
-from django.conf.global_settings import USE_L10N
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 

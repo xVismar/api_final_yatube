@@ -4,21 +4,15 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
-from api.views import FollowViewSet
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1', include('api.urls', namespace='api_v1')),
+    path('', include('api.urls', namespace='api')),
     path(
         'redoc/',
         TemplateView.as_view(template_name='redoc.html'),
         name='redoc'
     ),
-    path(
-        'api/v1/follow/',
-        FollowViewSet.as_view({'get': 'list', 'post': 'create'}),
-        name='follow'
-    ),
+
 ]
 
 if settings.DEBUG:
