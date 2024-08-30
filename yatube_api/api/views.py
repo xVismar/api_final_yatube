@@ -1,10 +1,10 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
+
 
 from api.mixins import GetPermissions
 from api.serializers import (
@@ -54,8 +54,6 @@ class CommentViewSet(GetPermissions):
 class FollowViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = FollowSerializer
     permission_classes = (IsAuthenticated,)
-    filter_backends = (DjangoFilterBackend, SearchFilter)
-    search_fields = ('=following__username',)
 
     def perform_create(self, serializer):
         """Переопределение метода perform_create для FollowViewSet.
@@ -65,8 +63,13 @@ class FollowViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        """Переопределение метода get_queryset для FollowViewSet.
+        """Переопределяет метод get_queryset для FollowViewSet.
 
-        Возвращает список постов пользователя.
+        Добавляет к queryset параметры ?search , если таковые имеются.
         """
-        return self.request.user.follower
+        queryset = self.request.user.follower.all()
+        search_params = self.request.query_params.get('search')
+        return (
+            queryset if not search_params
+            else queryset.filter(following__username__icontains=search_params)
+        )
